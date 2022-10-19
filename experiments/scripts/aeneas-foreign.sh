@@ -6,7 +6,7 @@ SLA=$1
 DACAPO_WORKLOAD=$4
 
 SCRATCH_DIR=scratch
-DEPS_DIR="resources/jar"
+DEPS_DIR="libs"
 
 EFLECT_JAR="eflect-experiments.jar:../eflect.jar"
 SUNFLOW_JAR="${DEPS_DIR}/sunflow.jar:${DEPS_DIR}/stokelib.jar:${DEPS_DIR}/guava-20.0.jar"

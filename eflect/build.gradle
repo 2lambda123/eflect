@@ -1,0 +1,25 @@
+import org.gradle.internal.jvm.Jvm
+
+plugins {
+    id 'cpp-library'
+    id 'java-library'
+}
+
+library {
+    baseName = "CPUScaler"
+    binaries.configureEach {
+        def compileTask = compileTask.get()
+        compileTask.source.from fileTree(dir: 'src/main/c', include: '**/*.c')
+        if (toolChain instanceof GccCompatibleToolChain) {
+            compileTask.compilerArgs.addAll(['-x', 'c', '-std=gnu11'])
+            compileTask.compilerArgs.addAll(['-I', "${Jvm.current().javaHome}/include"])
+            compileTask.compilerArgs.addAll(['-I', "${Jvm.current().javaHome}/include/linux"])
+        } else {
+            throw new GradleException("Unsupported toolchain")
+        }
+    }
+}
+
+jar {
+    from library.developmentBinary.flatMap {(it as CppSharedLibrary).linkFile}
+}

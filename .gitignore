@@ -17,3 +17,8 @@ eflect-logs
 *.log
 *.pdf
 *.txt
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+.idea
