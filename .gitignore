@@ -2,6 +2,7 @@
 *.o
 *.class
 *.jar
+!gradle/wrapper/*
 *.so
 *.so.*
 __pycache__
