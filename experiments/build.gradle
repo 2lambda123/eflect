@@ -1,3 +1,5 @@
+import com.sun.source.tree.DoWhileLoopTree
+
 plugins {
     id "de.undercouch.download" version "5.3.0"
     id 'application'
@@ -12,19 +14,25 @@ repositories {
     }
 }
 
-task downloadSunflow(type: Download) {
+tasks.register('downloadDacapo', Download) {
+    src 'https://univerzamb-my.sharepoint.com/:u:/g/personal/ziga_leber_um_si/EQkZwh8QAhVPnRw_v3rpv6IByV2VB2WtemS7eCq2Kxfq4Q?download=1'
+    dest "$localLibs/dacapo.jar"
+    overwrite false
+}
+
+tasks.register("downloadSunflow", Download) {
     src 'https://sunflow-deps.s3.amazonaws.com/sunflow.jar'
     dest localLibs
     overwrite false
 }
 
-task downloadJanino(type: Download) {
+tasks.register("downloadJanino", Download) {
     src 'https://sunflow-deps.s3.amazonaws.com/janino.jar'
     dest localLibs
     overwrite false
 }
 
-tasks.compileJava {
+tasks.getByName("compileJava") {
     dependsOn tasks.withType(Download)
 }
 
@@ -33,6 +41,8 @@ dependencies {
     implementation project(":aeneas")
     implementation group: 'com.google.guava', name: 'guava', version: '20.0'
     implementation name:"sunflow"
+    implementation name:"dacapo"
+    runtimeOnly name:"janino"
 }
 
 application {

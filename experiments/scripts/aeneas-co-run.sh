@@ -14,7 +14,7 @@ iter=0
 for i in $1; do
   let iter++
   #java -Deflect.output=$OUTPUT_DIR/$iter -cp $EFLECT_JAR:$SUNFLOW_JAR eflect.experiments.EflectSunflow $i $ITERS &
-  gradle run --args "$OUTPUT_DIR/$iter $i $ITERS"
+  gradle run --args "$OUTPUT_DIR/$iter $i $ITERS" &
   pids+=$!" "
 done
 

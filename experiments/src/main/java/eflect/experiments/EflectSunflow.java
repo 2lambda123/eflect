@@ -42,7 +42,7 @@ public final class EflectSunflow implements BenchmarkTest {
   }
 
   public static void main(String[] args) throws Exception {
-    System.setProperty("eflect.output", args[0]); // FIXME: Work around, I'm not sure why I doesn't work from the command line
+    System.setProperty("eflect.output", args[0]); // FIXME: Work around, I'm not sure why I doesn't work otherwise
     double SLA = Integer.parseInt(args[1]);
 
     int iterations = Integer.parseInt(args[2]);
