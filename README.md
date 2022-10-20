@@ -8,7 +8,7 @@
 
 # New
 
-## Build
+## Building and execution
 
 ```bash
 cd eflect/
