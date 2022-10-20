@@ -6,7 +6,18 @@
 
 > Developing energy-aware applications is a well known approach to software-based energy optimization. This promising approach is however faced with a significant hurdle when deployed to the environments shared among multiple applications, where the energy consumption effected by one application may erroneously be observed by another application. We introduce `eflect`, a novel software framework for disentangling the energy consumption of co-running applications. Our key idea, called energy virtualization, enables each energy-aware application to be only aware of the energy consumption effected by its execution. `eflect` is unique in its lightweight design: it is a purely application-level solution that requires no modification to the underlying hardware or system software. Experiments show `eflect` incurs low overhead with high precision. Furthermore, it can seamlessly port existing application-level energy frameworks --- one for energy-adaptive approximation and the other for energy profiling --- to shared environments while retaining their intended effectiveness.
 
-# Experiment reproduction: Docker-based execution #
+# New
+
+```bash
+cd eflect/
+nix-shell
+gradle build
+sudo ./aeneas-experiments.sh data 500
+```
+
+# Old
+
+## Experiment reproduction: Docker-based execution ##
 
 Our publication data can be reproduced using a docker image. You can either run the image from docker hub:
 
@@ -36,11 +47,11 @@ cd eflect/experiments && run-experiments.sh && python3 scripts/processing data
   > - Debian default `powersave` governor
   > - Java 11 Hotspot VM build 11.0.2+9-LTS
 
-# Experiment reproduction: Building from source #
+## Experiment reproduction: Building from source ##
 
 If you prefer to build `eflect` from source, please follow the instructions below:
 
-## Building ##
+### Building ###
 
 `eflect` requires the following to build and run:
 
@@ -51,6 +62,6 @@ pip3 install numpy pandas matplotlib
 
 A deployable `eflect` jar can be built from the top-level with `make eflect`. To run the experiments, you will need to first run `eflect/experiments/setup.sh` which will download the experiment dependencies and build the driving code.
 
-## Execution ##
+### Execution ###
 
 Once `eflect` and its driver are built, the entire experiment can be run using `eflect/experiments/run-experiments.sh` in the same way as the docker image.
