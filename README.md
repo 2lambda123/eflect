@@ -15,6 +15,7 @@
 cd eflect/
 nix-shell
 gradle build
+cd experiments/
 sudo ./aeneas-experiments.sh data 500
 ```
 
