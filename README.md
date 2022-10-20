@@ -8,12 +8,18 @@
 
 # New
 
+## Build
+
 ```bash
 cd eflect/
 nix-shell
 gradle build
 sudo ./aeneas-experiments.sh data 500
 ```
+
+## Development machine
+
+The configuration of the development machine is [here](https://github.com/UM-LPM/server/blob/master/machines/aeneas/configuration.nix)
 
 # Old
 
