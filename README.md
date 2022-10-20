@@ -1,6 +1,7 @@
 # `eflect` #
 
 [![DOI](https://zenodo.org/badge/289755847.svg)](https://zenodo.org/badge/latestdoi/289755847)
+[![gradle build](https://github.com/UM-LPM/eflect/actions/workflows/gradle.yml/badge.svg)](https://github.com/UM-LPM/eflect/actions/workflows/gradle.yml)
 
 `eflect` is an energy profiler for multi-threaded Java applications in shared environments. Below is our paper abstract about this work:
 
