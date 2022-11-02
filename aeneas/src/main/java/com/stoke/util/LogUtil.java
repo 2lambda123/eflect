@@ -51,9 +51,9 @@ public class LogUtil {
         System.exit(1);
         break;
       case MACOS:
-        System.err.println("Windows not supported. Exiting.");
-        System.exit(1);
-        break;
+        //System.err.println("Windows not supported. Exiting.");
+        //System.exit(1);
+       // break;
       case LINUX:
         logger = new PrintWriter(new BufferedWriter(new FileWriter(_logname)));
         break;
