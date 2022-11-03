@@ -1,0 +1,18 @@
+syntax = "proto3";
+import "common.proto";
+
+option java_multiple_files = true;
+option java_package = "si.um.feri.lpm.green.grpc";
+
+package sunflow;
+
+service SunflowService {
+  rpc fitness (SunflowKnobsRequest) returns (common.FitnessReply) {}
+}
+
+message SunflowKnobsRequest {
+  int32 threads = 1;
+  int32 resolution = 2;
+  int32 aaMin = 3;
+  int32 aaMax = 4;
+}

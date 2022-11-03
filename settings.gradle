@@ -12,3 +12,6 @@ include 'cpuscaler'
 include 'eflect'
 include 'aeneas'
 include 'experiments'
+include 'sunflowload'
+include 'green'
+

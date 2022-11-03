@@ -112,24 +112,6 @@ public final class EflectSunflow implements BenchmarkTest {
     @Override
     public void build() {
       // settings
-      parameter("threads", threads);
-      // spawn regular priority threads
-      parameter("threads.lowPriority", false);
-      parameter("resolutionX", resolution);
-      parameter("resolutionY", resolution);
-      parameter("aa.min", Integer.parseInt(System.getProperty("aa.min", "-1")));
-      parameter("aa.max", Integer.parseInt(System.getProperty("aa.max", "1")));
-      parameter("filter", "triangle");
-      parameter("depths.diffuse", 2);
-      parameter("depths.reflection", 2);
-      parameter("depths.refraction", 2);
-      parameter("bucket.order", "hilbert");
-      parameter("bucket.size", 32);
-      // gi options
-      parameter("gi.engine", "igi");
-      parameter("gi.igi.samples", 90);
-      parameter("gi.igi.c", 0.000008f);
-      options(SunflowAPI.DEFAULT_OPTIONS);
       buildCornellBox();
     }
 

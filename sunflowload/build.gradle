@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.google.guava', name: 'guava', version: '20.0'
+    implementation name:"sunflow"
+    runtimeOnly name:"janino"
+}

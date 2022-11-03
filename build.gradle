@@ -1,0 +1,12 @@
+
+subprojects {
+    repositories {
+        ivy {
+            url 'https://sunflow-deps.s3.amazonaws.com/'
+            patternLayout {
+                artifact '/[module].[ext]'
+            }
+            metadataSources { artifact() }
+        }
+    }
+}
