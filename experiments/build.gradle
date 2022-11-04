@@ -12,16 +12,6 @@ repositories {
     }
 }
 
-tasks.register('downloadDacapo', Download) {
-    src 'https://univerzamb-my.sharepoint.com/:u:/g/personal/ziga_leber_um_si/EQkZwh8QAhVPnRw_v3rpv6IByV2VB2WtemS7eCq2Kxfq4Q?download=1'
-    dest "$localLibs/dacapo.jar"
-    overwrite false
-}
-
-tasks.getByName("compileJava") {
-    dependsOn tasks.withType(Download)
-}
-
 dependencies {
     implementation project(":eflect")
     implementation project(":aeneas")

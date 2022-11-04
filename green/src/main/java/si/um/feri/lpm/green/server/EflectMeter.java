@@ -2,7 +2,6 @@ package si.um.feri.lpm.green.server;
 
 import eflect.Eflect;
 import eflect.data.EnergyFootprint;
-import si.um.feri.lpm.green.Measurement;
 
 public class EflectMeter implements Meter {
 

@@ -1,19 +1,17 @@
 package si.um.feri.lpm.green.server;
 
-import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import si.um.feri.lpm.green.Measurement;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class GreenServer {
+public class Server {
 
-    private Server server;
+    private io.grpc.Server server;
     private Meter meter;
 
 
-    public GreenServer(Meter meter) {
+    public Server(Meter meter) {
         this.meter = meter;
     }
 
@@ -38,7 +36,7 @@ public class GreenServer {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        var server = new GreenServer(new EflectMeter());
+        var server = new Server(new EflectMeter());
         server.start();
         server.blockUntilShutdown();
     }

@@ -1,7 +1,5 @@
 package si.um.feri.lpm.green.server;
 
-import si.um.feri.lpm.green.Measurement;
-
 import java.time.Duration;
 import java.time.Instant;
 

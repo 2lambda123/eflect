@@ -2,15 +2,15 @@ syntax = "proto3";
 import "common.proto";
 
 option java_multiple_files = true;
-option java_package = "si.um.feri.lpm.green.grpc";
+option java_package = "si.um.feri.lpm.green.grpc.sunflow";
 
 package sunflow;
 
 service SunflowService {
-  rpc fitness (SunflowKnobsRequest) returns (common.FitnessReply) {}
+  rpc fitness (SunflowKnobs) returns (common.Fitness) {}
 }
 
-message SunflowKnobsRequest {
+message SunflowKnobs {
   int32 threads = 1;
   int32 resolution = 2;
   int32 aaMin = 3;
