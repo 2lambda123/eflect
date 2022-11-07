@@ -40,8 +40,8 @@ jobs:
         
     - name: Deploy
       env:
-        PATH: ${{ github.workspace }}/green/build/distributions/green.zip
+        DIST: ${{ github.workspace }}/green/build/distributions/green.zip
       run: |
         eval "$(ssh-agent)"
         ssh-add - <<< "${{ secrets.SSH_KEY }}"
-        scp $PATH green@green.lpm.feri.um.si:/home/green/green.zip
+        scp $DIST green@green.lpm.feri.um.si:/home/green/green.zip
