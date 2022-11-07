@@ -1,11 +1,12 @@
 name: build
 
 on:
-  workflow_call:
   push:
     branches: [ "main" ]  
     paths-ignore:
       - README.md
+      
+concurrency: deploy  
 
 permissions:
   contents: read
@@ -30,13 +31,10 @@ jobs:
       with:
         arguments: build
         
-    - name: Distribution Zip
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: :green:distZip
-        
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: green
-        path: eflect/green/build/distributions/green-*.*.*.zip
+    - name: Deploy
+      env:
+        PATH: ${{ github.workspace }}/green/build/distributions/green.zip
+      run: |
+        eval "$(ssh-agent)"
+        ssh-add - <<< "${{ secrets.SSH_KEY }}"
+        scp $PATH green@green.lpm.feri.um.si:/home/green/green.zip
