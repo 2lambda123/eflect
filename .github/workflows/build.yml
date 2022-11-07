@@ -43,10 +43,20 @@ jobs:
       with:
         arguments: installDist
         
-    - name: Deploy
-      env:
-        DIST: ${{ github.workspace }}/green/build/install/green/
+    - name: Load SSH key
       run: |
         eval "$(ssh-agent)"
         ssh-add - <<< "${{ secrets.SSHKEY }}"
-        rsync -rtz --delete "$DIST" 'green@green.lpm.feri.um.si:/home/green/green/'
+        
+    - name: Deploy
+      env:
+        DIST: ${{ github.workspace }}/green/build/install/green/
+      run: rsync -rtz --delete "$DIST" 'green@green.lpm.feri.um.si:/home/green/green/'
+        
+    - name: Tunnel
+      run: ssh -L 50051:localhost:50051 green.lpm.feri.um.si
+      
+    - name: Test post deploy
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: testPostDeploy
