@@ -1,6 +1,5 @@
 plugins {
     id 'application'
-    id 'distribution'
 }
 
 group 'si.um.feri.lpm.green'
@@ -27,6 +26,10 @@ dependencies {
 }
 
 mainClassName = 'si.um.feri.lpm.green.server.Server'
+
+distributions.main {
+    version = ''
+}
 
 test {
     useJUnitPlatform()
