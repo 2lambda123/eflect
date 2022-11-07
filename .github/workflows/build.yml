@@ -44,4 +44,4 @@ jobs:
       run: |
         eval "$(ssh-agent)"
         ssh-add - <<< "${{ secrets.SSH_KEY }}"
-        scp $DIST green@green.lpm.feri.um.si:/home/green/green.zip
+        scp "$DIST" 'green@green.lpm.feri.um.si:/home/green/green.zip'
