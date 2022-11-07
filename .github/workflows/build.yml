@@ -1,8 +1,9 @@
 name: build
 
 on:
+  workflow_call:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  
     paths-ignore:
       - README.md
 
@@ -24,7 +25,18 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Build with Gradle
+    - name: Build
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+        
+    - name: Distribution Zip
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: :green:distZip
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: green
+        path: eflect/green/build/distributions/green-*.*.*.zip
