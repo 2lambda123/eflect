@@ -14,8 +14,15 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: UM-LPM/known_hosts
+        path: known_hosts
+
+    - name: Set known hosts
+      run: install -D -m 400 known_hosts/known_hosts ~/.ssh/known_hosts
+        
     - uses: actions/checkout@v3
       with:
         submodules: recursive
