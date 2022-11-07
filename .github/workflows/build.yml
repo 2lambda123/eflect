@@ -22,10 +22,6 @@ jobs:
 
     - name: Set known hosts
       run: install -D -m 600 known_hosts/known_hosts ~/.ssh/known_hosts
-      
-    - uses: webfactory/ssh-agent@v0.6.0
-      with:
-        ssh-private-key: ${{ secrets.SSHKEY }}
         
     - uses: actions/checkout@v3
       with:
@@ -50,10 +46,16 @@ jobs:
     - name: Deploy
       env:
         DIST: ${{ github.workspace }}/green/build/install/green/
-      run: rsync -rtz --delete "$DIST" 'green@green.lpm.feri.um.si:/home/green/green/'
+      run:
+        eval "$(ssh-agent)"
+        ssh-add - <<< "${{ secrets.SSHKEY }}"
+        rsync -rtz --delete "$DIST" 'green@green.lpm.feri.um.si:/home/green/green/'
         
     - name: Tunnel
-      run: ssh -L 50051:localhost:50051 green.lpm.feri.um.si
+      run: |
+        eval "$(ssh-agent)"
+        ssh-add - <<< "${{ secrets.SSHKEY }}"
+        ssh -fN -L 50051:localhost:50051 'green@green.lpm.feri.um.si'
       
     - name: Test post deploy
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
