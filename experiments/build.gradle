@@ -24,3 +24,6 @@ dependencies {
 application {
     mainClass = 'eflect.experiments.EflectSunflow'
 }
+
+distZip.enabled = false
+distTar.enabled = false

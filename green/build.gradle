@@ -5,6 +5,8 @@ plugins {
 group 'si.um.feri.lpm.green'
 version '0.0.0'
 
+mainClassName = 'si.um.feri.lpm.green.server.Server'
+
 repositories {
     mavenCentral()
 }
@@ -25,11 +27,8 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 }
 
-mainClassName = 'si.um.feri.lpm.green.server.Server'
-
-distributions.main {
-    version = ''
-}
+distZip.enabled = false
+distTar.enabled = false
 
 test {
     useJUnitPlatform()
