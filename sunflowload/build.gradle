@@ -2,6 +2,10 @@ plugins {
     id 'java-library'
 }
 
+group 'si.um.feri.lpm.green'
+version '0.0.0'
+
+
 repositories {
     mavenCentral()
 }

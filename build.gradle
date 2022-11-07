@@ -2,7 +2,7 @@
 subprojects {
     repositories {
         ivy {
-            url 'https://test.lpm.feri.um.si'
+            url 'https://test.lpm.feri.um.si' // FIXME: Reused domain name, replace...
             patternLayout {
                 artifact '/[module].[ext]'
             }
