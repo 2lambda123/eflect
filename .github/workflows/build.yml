@@ -21,7 +21,7 @@ jobs:
         path: known_hosts
 
     - name: Set known hosts
-      run: install -D -m 400 known_hosts/known_hosts ~/.ssh/known_hosts
+      run: install -D -m 600 known_hosts/known_hosts ~/.ssh/known_hosts
       
     - uses: webfactory/ssh-agent@v0.6.0
       with:
