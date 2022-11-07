@@ -46,7 +46,7 @@ jobs:
     - name: Deploy
       env:
         DIST: ${{ github.workspace }}/green/build/install/green/
-      run:
+      run: |
         eval "$(ssh-agent)"
         ssh-add - <<< "${{ secrets.SSHKEY }}"
         rsync -rtz --delete "$DIST" 'green@green.lpm.feri.um.si:/home/green/green/'
