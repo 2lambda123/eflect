@@ -30,6 +30,17 @@ dependencies {
 distZip.enabled = false
 distTar.enabled = false
 
+tasks.register('testPostDeploy', Test) {
+    useJUnitPlatform {
+        includeTags 'PostDeploy'
+    }
+    group 'verification'
+    description 'run post deploy tests'
+}
+
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags "PostDeploy"
+
+    }
 }
