@@ -50,6 +50,7 @@ jobs:
         eval "$(ssh-agent)"
         ssh-add - <<< "${{ secrets.SSHKEY }}"
         rsync -rtz --delete "$DIST" 'green@green.lpm.feri.um.si:/home/green/green/'
+        ssh root@green.lpm.feri.um.si 'systemctl restart green'
         
     - name: Tunnel
       run: |
