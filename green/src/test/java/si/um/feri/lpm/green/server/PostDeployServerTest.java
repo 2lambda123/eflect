@@ -29,5 +29,6 @@ class PostDeployServerTest {
         var response = stub.fitness(request);
         System.out.print(response.getEnergy());
         assertTrue(response.getEnergy() > 0.0);
+        assertTrue(response.getDistance() > 0.0);
     }
 }

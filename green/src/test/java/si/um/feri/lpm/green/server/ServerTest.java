@@ -29,5 +29,6 @@ class ServerTest {
         var stub = SunflowServiceGrpc.newBlockingStub(channel);
         var response = stub.fitness(request);
         assertEquals(MockMeter.ENERGY, response.getEnergy());
+        assertTrue(response.getDistance() > 0.0);
     }
 }

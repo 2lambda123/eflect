@@ -6,7 +6,7 @@ import eflect.data.EnergyFootprint;
 public class EflectMeter implements Meter {
 
     @Override
-    public Measurement measure(Runnable runnable) {
+    public double measureEnergy(Runnable runnable) {
         Eflect.getInstance().start();
         runnable.run();
         Eflect.getInstance().stop();
@@ -15,6 +15,6 @@ public class EflectMeter implements Meter {
         for (EnergyFootprint footprint : Eflect.getInstance().read()) {
             energy += footprint.energy;
         }
-        return new Measurement(energy);
+        return energy;
     }
 }

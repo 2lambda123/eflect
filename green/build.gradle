@@ -41,6 +41,5 @@ tasks.register('testPostDeploy', Test) {
 test {
     useJUnitPlatform {
         excludeTags "PostDeploy"
-
     }
 }

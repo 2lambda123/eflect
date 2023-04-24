@@ -16,15 +16,18 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
     @Override
     public void fitness(SunflowKnobs request, StreamObserver<Fitness> responseObserver) {
 
-        var knobs = new si.um.feri.lpm.green.sunflowload.SunflowKnobs(
+        final var knobs = new si.um.feri.lpm.green.sunflowload.SunflowKnobs(
                 request.getThreads(),
                 request.getResolution(),
                 request.getAaMin(),
                 request.getAaMax());
 
-        var measurement = meter.measure(new SunflowRunner(knobs));
-        var reply = Fitness.newBuilder()
-                .setEnergy(measurement.energy())
+        final var runner = new SunflowRunner(knobs);
+        final var energy = meter.measureEnergy(runner);
+        final var distance = runner.measureDistance();
+        final var reply = Fitness.newBuilder()
+                .setEnergy(energy)
+                .setDistance(distance)
                 .build();
 
         responseObserver.onNext(reply);

@@ -18,10 +18,10 @@ public class TimeProxyMeter implements Meter {
     }
 
     @Override
-    public Measurement measure(Runnable runnable) {
+    public double measureEnergy(Runnable runnable) {
         Instant start = Instant.now();
         runnable.run();
         Instant end = Instant.now();
-        return new Measurement(factor * Duration.between(start, end).toMillis());
+        return factor * Duration.between(start, end).toMillis();
     }
 }
