@@ -23,10 +23,11 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
                 request.getAaMax());
 
         final var runner = new SunflowRunner(knobs);
-        final var energy = meter.measureEnergy(runner);
+        final var measurements = meter.measure(runner);
         final var distance = runner.measureDistance();
         final var reply = Fitness.newBuilder()
-                .setEnergy(energy)
+                .setEnergy(measurements.energy())
+                .setTime(measurements.time())
                 .setDistance(distance)
                 .build();
 

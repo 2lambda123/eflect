@@ -3,18 +3,24 @@ package si.um.feri.lpm.green.server;
 import eflect.Eflect;
 import eflect.data.EnergyFootprint;
 
-public class EflectMeter implements Meter {
+import java.time.Duration;
+import java.time.Instant;
 
-    @Override
+
+public class CombinedMeter implements Meter {
+
     public Measurements measure(Runnable runnable) {
         Eflect.getInstance().start();
+        Instant start = Instant.now();
         runnable.run();
+        Instant end = Instant.now();
         Eflect.getInstance().stop();
 
         double energy = 0;
         for (EnergyFootprint footprint : Eflect.getInstance().read()) {
             energy += footprint.energy;
         }
-        return new Measurements(energy, 0);
+        long time = Duration.between(start, end).toMillis();
+        return new Measurements(energy, time);
     }
 }

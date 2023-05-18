@@ -36,7 +36,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        var server = new Server(new EflectMeter());
+        var server = new Server(new CombinedMeter());
         server.start();
         server.blockUntilShutdown();
     }

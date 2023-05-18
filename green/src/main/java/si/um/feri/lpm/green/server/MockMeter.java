@@ -2,10 +2,11 @@ package si.um.feri.lpm.green.server;
 
 public class MockMeter implements Meter {
     public static double ENERGY = 1;
+    public static long TIME = 0;
 
     @Override
-    public double measureEnergy(Runnable runnable) {
+    public Measurements measure(Runnable runnable) {
         runnable.run();
-        return ENERGY;
+        return new Measurements(ENERGY, TIME);
     }
 }
