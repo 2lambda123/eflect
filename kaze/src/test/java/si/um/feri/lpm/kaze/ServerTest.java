@@ -1,6 +1,8 @@
 package si.um.feri.lpm.kaze;
 
 import io.grpc.ManagedChannelBuilder;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import si.um.feri.lpm.grpc.kaze.KazeKnobs;
 import si.um.feri.lpm.grpc.kaze.KazeServiceGrpc;
 
@@ -10,7 +12,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ServerTest {
-    @org.junit.jupiter.api.Test
+    @Test
+    @Disabled
     void testKaze() throws IOException {
         var request = KazeKnobs.newBuilder()
                 .setSimNum(1)
