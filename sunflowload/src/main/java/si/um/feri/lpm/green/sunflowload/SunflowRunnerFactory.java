@@ -55,7 +55,7 @@ public class SunflowRunnerFactory {
         }
     }
 
-    private synchronized BufferedImage render(SunflowKnobs knobs) {
+    private static synchronized BufferedImage render(SunflowKnobs knobs) {
         final var scene = new CornellBox(knobs);
         scene.build();
         final var display = new BufferedImageDisplay();
@@ -66,7 +66,7 @@ public class SunflowRunnerFactory {
 
     public SunflowRunnerFactory() {
         this.hasher = new PerceptiveHash(32);
-        this.referenceHash = this.hasher.hash(this.render(SunflowKnobs.REFERENCE));
+        this.referenceHash = this.hasher.hash(render(SunflowKnobs.REFERENCE));
     }
 
     public class Runner implements Runnable {

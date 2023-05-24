@@ -13,12 +13,12 @@ public class CombinedMeter implements Meter {
         Eflect.getInstance().start();
         Instant start = Instant.now();
         runnable.run();
+        Instant end = Instant.now();
         try {
-            Thread.sleep(64);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Instant end = Instant.now();
         Eflect.getInstance().stop();
 
         double energy = 0;

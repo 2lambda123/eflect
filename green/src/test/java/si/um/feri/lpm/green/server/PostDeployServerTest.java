@@ -37,7 +37,7 @@ class PostDeployServerTest {
     @org.junit.jupiter.api.Test
     void testQuick() throws IOException {
         var request = SunflowKnobs.newBuilder()
-                .setThreads(6)
+                .setThreads(2)
                 .setResolution(64)
                 .setAaMin(-1)
                 .setAaMax(-2)
