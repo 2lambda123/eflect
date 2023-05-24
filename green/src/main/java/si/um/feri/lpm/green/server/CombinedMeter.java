@@ -10,15 +10,10 @@ import java.time.Instant;
 public class CombinedMeter implements Meter {
 
     public Measurements measure(Runnable runnable) {
-        Eflect.getInstance().start();
+        Eflect.getInstance().start(16);
         Instant start = Instant.now();
         runnable.run();
         Instant end = Instant.now();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         Eflect.getInstance().stop();
 
         double energy = 0;
