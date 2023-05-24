@@ -9,12 +9,10 @@ import org.sunflow.image.Color;
 import si.um.feri.lpm.green.sunflowload.scenes.CornellBox;
 import java.awt.image.BufferedImage;
 
-public class SunflowRunner implements Runnable {
+public class SunflowRunnerFactory {
 
     Hash referenceHash;
-    Hash hash;
     HashingAlgorithm hasher;
-    SunflowKnobs knobs;
 
     // Striped down org.sunflow.core.display.FastDisplay
     static class BufferedImageDisplay implements Display {
@@ -66,19 +64,27 @@ public class SunflowRunner implements Runnable {
     }
 
 
-    public SunflowRunner(SunflowKnobs knobs) {
-        this.knobs = knobs;
+    public SunflowRunnerFactory() {
         this.hasher = new PerceptiveHash(32);
-        final var image = this.render(SunflowKnobs.REFERENCE);
-        this.referenceHash = this.hasher.hash(image);
+        this.referenceHash = this.hasher.hash(this.render(SunflowKnobs.REFERENCE));
     }
 
-    public double measureDistance() {
-        return referenceHash.normalizedHammingDistance(hash);
+    public class Runner implements Runnable {
+        Hash hash;
+        SunflowKnobs knobs;
+
+        public Runner(SunflowKnobs knobs) {
+            this.knobs = knobs;
+        }
+
+        @Override
+        public void run() {
+            this.hash = hasher.hash(render(this.knobs));
+        }
+
+        public double measureDistance() {
+            return referenceHash.normalizedHammingDistance(this.hash);
+        }
     }
 
-    @Override
-    public void run() {
-        hash = hasher.hash(render(knobs));
-    }
 }

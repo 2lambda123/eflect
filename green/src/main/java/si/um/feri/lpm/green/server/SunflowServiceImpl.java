@@ -4,12 +4,14 @@ import io.grpc.stub.StreamObserver;
 import si.um.feri.lpm.green.grpc.common.Fitness;
 import si.um.feri.lpm.green.grpc.sunflow.SunflowKnobs;
 import si.um.feri.lpm.green.grpc.sunflow.SunflowServiceGrpc;
-import si.um.feri.lpm.green.sunflowload.SunflowRunner;
+import si.um.feri.lpm.green.sunflowload.SunflowRunnerFactory;
 
 class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
     Meter meter;
+    SunflowRunnerFactory factory;
 
     public SunflowServiceImpl(Meter meter) {
+        factory = new SunflowRunnerFactory();
         this.meter = meter;
     }
 
@@ -22,7 +24,7 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
                 request.getAaMin(),
                 request.getAaMax());
 
-        final var runner = new SunflowRunner(knobs);
+        final var runner = factory.new Runner(knobs);
         final var measurements = meter.measure(runner);
         final var distance = runner.measureDistance();
         final var reply = Fitness.newBuilder()
