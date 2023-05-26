@@ -10,7 +10,7 @@ import java.time.Instant;
 public class CombinedMeter implements Meter {
 
     public Measurements measure(Runnable runnable) {
-        Eflect.getInstance().start(16);
+        Eflect.getInstance().start(4);
         Instant start = Instant.now();
         runnable.run();
         Instant end = Instant.now();

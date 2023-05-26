@@ -31,7 +31,9 @@ class PostDeployServerTest {
 
         var stub = SunflowServiceGrpc.newBlockingStub(channel);
         var response = stub.fitness(request);
-        System.out.print(response.getEnergy());
+        System.out.println(response.getEnergy());
+        System.out.println(response.getTime());
+        System.out.println(response.getDistance());
         assertTrue(response.getEnergy() > 0.0);
         assertTrue(response.getTime() > 0);
         assertTrue(response.getDistance() > 0.0);
@@ -42,7 +44,7 @@ class PostDeployServerTest {
     void testQuick() throws IOException {
         var request = SunflowKnobs.newBuilder()
                 .setThreads(8)
-                .setResolution(64)
+                .setResolution(128)
                 .setAaMin(-1)
                 .setAaMax(-2)
                 .setBucketSize(32)
@@ -56,7 +58,9 @@ class PostDeployServerTest {
 
         var stub = SunflowServiceGrpc.newBlockingStub(channel);
         var response = stub.fitness(request);
-        System.out.print(response.getEnergy());
+        System.out.println(response.getEnergy());
+        System.out.println(response.getTime());
+        System.out.println(response.getDistance());
         assertTrue(response.getEnergy() > 0.0);
         assertTrue(response.getTime() > 0);
         assertTrue(response.getDistance() > 0.0);
