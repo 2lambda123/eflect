@@ -30,9 +30,17 @@ public class CornellBox extends SunflowAPI {
         parameter("bucket.order", "hilbert");
         parameter("bucket.size", 32);
         // gi options
-        parameter("gi.engine", "igi");
+        /*parameter("gi.engine", "igi");
         parameter("gi.igi.samples", 90);
-        parameter("gi.igi.c", 0.000008f);
+        parameter("gi.igi.c", 0.000008f);*/
+
+        parameter("gi.engine", "ambocc");
+        parameter("gi.ambocc.samples", knobs.aoSamples());
+        parameter("gi.ambocc.maxdist", 600.0f);
+
+        //parameter("gi.engine", "path");
+        //parameter("gi.path.samples", knobs.aoSamples());
+
         options(SunflowAPI.DEFAULT_OPTIONS);
 
         parameter(

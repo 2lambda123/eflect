@@ -2,6 +2,7 @@ package si.um.feri.lpm.green.server;
 
 import io.grpc.ManagedChannelBuilder;
 import org.junit.jupiter.api.Tag;
+import si.um.feri.lpm.green.grpc.sunflow.Filter;
 import si.um.feri.lpm.green.grpc.sunflow.SunflowKnobs;
 import si.um.feri.lpm.green.grpc.sunflow.SunflowServiceGrpc;
 
@@ -15,10 +16,13 @@ class PostDeployServerTest {
     @org.junit.jupiter.api.Test
     void testDefault() throws IOException {
         var request = SunflowKnobs.newBuilder()
-                .setThreads(1)
-                .setResolution(64)
+                .setThreads(4)
+                .setResolution(320)
                 .setAaMin(-1)
                 .setAaMax(1)
+                .setBucketSize(32)
+                .setAoSamples(32)
+                .setFilter(Filter.TRIANGLE)
                 .build();
 
         var channel = ManagedChannelBuilder.forTarget("localhost:50051")
@@ -37,10 +41,13 @@ class PostDeployServerTest {
     @org.junit.jupiter.api.Test
     void testQuick() throws IOException {
         var request = SunflowKnobs.newBuilder()
-                .setThreads(1)
+                .setThreads(8)
                 .setResolution(64)
                 .setAaMin(-1)
                 .setAaMax(-2)
+                .setBucketSize(32)
+                .setAoSamples(32)
+                .setFilter(Filter.TRIANGLE)
                 .build();
 
         var channel = ManagedChannelBuilder.forTarget("localhost:50051")

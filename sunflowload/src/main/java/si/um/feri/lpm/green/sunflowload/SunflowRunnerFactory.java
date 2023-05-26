@@ -7,12 +7,15 @@ import org.sunflow.SunflowAPI;
 import org.sunflow.core.Display;
 import org.sunflow.image.Color;
 import si.um.feri.lpm.green.sunflowload.scenes.CornellBox;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 
 public class SunflowRunnerFactory {
 
-    Hash referenceHash;
-    HashingAlgorithm hasher;
+    BufferedImage referenceImage;
 
     // Striped down org.sunflow.core.display.FastDisplay
     static class BufferedImageDisplay implements Display {
@@ -55,6 +58,16 @@ public class SunflowRunnerFactory {
         }
     }
 
+    // https://stackoverflow.com/questions/4216123/how-to-scale-a-bufferedimage
+    public static BufferedImage resize(BufferedImage source, int width, int height) {
+        BufferedImage resized = new BufferedImage(width, height, source.getType());
+        Graphics2D g = resized.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(source, 0, 0, width, height, 0, 0, source.getWidth(), source.getHeight(), null);
+        g.dispose();
+        return resized;
+    }
+
     private static synchronized BufferedImage render(SunflowKnobs knobs) {
         final var scene = new CornellBox(knobs);
         scene.build();
@@ -63,13 +76,13 @@ public class SunflowRunnerFactory {
         return display.getImage();
     }
 
-
     public SunflowRunnerFactory() {
-        this.hasher = new PerceptiveHash(32);
-        this.referenceHash = this.hasher.hash(render(SunflowKnobs.REFERENCE));
+        this.referenceImage = render(SunflowKnobs.REFERENCE);
     }
 
     public class Runner implements Runnable {
+        BufferedImage image;
+        BufferedImage resizedImage;
         Hash hash;
         SunflowKnobs knobs;
 
@@ -79,11 +92,12 @@ public class SunflowRunnerFactory {
 
         @Override
         public void run() {
-            this.hash = hasher.hash(render(this.knobs));
+            this.image = render(this.knobs);
+            this.resizedImage = resize(this.image, referenceImage.getWidth(), referenceImage.getHeight());
         }
 
-        public double measureDistance() {
-            return referenceHash.normalizedHammingDistance(this.hash);
+        public ImageDifference.Result imageDifference() {
+            return ImageDifference.calculate(referenceImage, this.resizedImage);
         }
     }
 
