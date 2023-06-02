@@ -11,10 +11,12 @@ import java.util.logging.Logger;
 public class CombinedMeter implements Meter {
 
     public synchronized Measurements measure(Runnable runnable) {
-        Logger.getGlobal().info(String.format("green: thread %d %s", Thread.currentThread().getId(), Thread.currentThread().getName()));
-        Logger.getGlobal().info(String.format("green: gc total %d max %d free %d", Runtime.getRuntime().totalMemory(), Runtime.getRuntime().maxMemory(), Runtime.getRuntime().freeMemory()));
+        GreenLogger.get().info(String.format("green: start thread %s gc total %d max %d free %d",
+                Thread.currentThread().getName(),
+                Runtime.getRuntime().totalMemory(),
+                Runtime.getRuntime().maxMemory(),
+                Runtime.getRuntime().freeMemory()));
 
-        Logger.getGlobal().info("green: start");
         Eflect.getInstance().start(4);
         Instant start = Instant.now();
         runnable.run();
@@ -30,7 +32,7 @@ public class CombinedMeter implements Meter {
 
         long time = Duration.between(start, end).toMillis();
 
-        Logger.getGlobal().info(String.format("green: energy %f samples %d time %d", energy, samples.size(), time));
+        GreenLogger.get().info(String.format("green: energy %f samples %d time %d", energy, samples.size(), time));
 
         return new Measurements(energy, time);
     }
