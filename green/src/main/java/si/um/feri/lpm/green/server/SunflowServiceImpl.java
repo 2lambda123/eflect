@@ -28,14 +28,9 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
                 request.getAoSamples(),
                 Filter.values()[request.getFilter().getNumber()]);
 
-        Measurements measurements;
-        double distance;
-        synchronized (SunflowServiceImpl.class) { // global lock
-            final var runner = factory.new Runner(knobs);
-            measurements = meter.measure(runner);
-            distance = runner.imageDifference().mse();
-        }
-
+        final var runner = factory.new Runner(knobs);
+        final var measurements = meter.measure(runner);
+        final var distance = runner.imageDifference().mse();
         final var reply = Fitness.newBuilder()
                 .setEnergy(measurements.energy())
                 .setTime(measurements.time())
