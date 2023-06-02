@@ -44,7 +44,7 @@ public final class Eflect {
 
   private ScheduledExecutorService executor;
   private EflectCollector eflect;
-  private Collection<EnergyFootprint> footprints;
+  private Collection<EnergyFootprint> footprints = new ArrayList<>();
   private boolean isRunning;
 
   private Eflect() {
@@ -63,7 +63,7 @@ public final class Eflect {
       executor = newScheduledThreadPool(3, threadFactory);
     }
     logger.info("starting eflect");
-    footprints = new ArrayList<>();
+    footprints.clear();
     eflect = new EflectCollector(mergeAttempts, executor, Duration.ofMillis(periodMillis));
     eflect.start();
   }
@@ -78,6 +78,7 @@ public final class Eflect {
     eflect.stop();
     logger.info("stopped eflect");
     footprints = eflect.read();
+    eflect = null;
   }
 
   /** Returns the last data produced by {@code stop}. */
