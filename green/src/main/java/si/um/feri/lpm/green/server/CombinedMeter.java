@@ -22,7 +22,11 @@ public class CombinedMeter implements Meter {
         runnable.run();
         Instant end = Instant.now();
         Eflect.getInstance().stop();
-        Logger.getGlobal().info("green: stop");
+        GreenLogger.get().info(String.format("green: stop thread %s gc total %d max %d free %d",
+                Thread.currentThread().getName(),
+                Runtime.getRuntime().totalMemory(),
+                Runtime.getRuntime().maxMemory(),
+                Runtime.getRuntime().freeMemory()));
 
         final var samples = Eflect.getInstance().read();
         double energy = 0;
