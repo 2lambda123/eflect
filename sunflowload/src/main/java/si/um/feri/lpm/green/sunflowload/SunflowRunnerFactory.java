@@ -83,7 +83,6 @@ public class SunflowRunnerFactory {
     public class Runner implements Runnable {
         BufferedImage image;
         BufferedImage resizedImage;
-        Hash hash;
         SunflowKnobs knobs;
 
         public Runner(SunflowKnobs knobs) {
