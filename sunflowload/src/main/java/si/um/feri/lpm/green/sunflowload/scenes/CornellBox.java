@@ -23,12 +23,12 @@ public class CornellBox extends SunflowAPI {
         parameter("resolutionY", knobs.resolution());
         parameter("aa.min", knobs.aaMin());
         parameter("aa.max", knobs.aaMax());
-        parameter("filter", "triangle");
+        parameter("filter", knobs.filter().toString());
         parameter("depths.diffuse", 2);
         parameter("depths.reflection", 2);
         parameter("depths.refraction", 2);
         parameter("bucket.order", "hilbert");
-        parameter("bucket.size", 32);
+        parameter("bucket.size", knobs.bucketSize());
         // gi options
         /*parameter("gi.engine", "igi");
         parameter("gi.igi.samples", 90);
