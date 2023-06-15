@@ -16,7 +16,7 @@ public class CombinedMeter implements Meter {
                 Runtime.getRuntime().maxMemory(),
                 Runtime.getRuntime().freeMemory()));
 
-        Eflect.getInstance().start(64);
+        Eflect.getInstance().start();
         Instant start = Instant.now();
         runnable.run();
         Instant end = Instant.now();
@@ -33,8 +33,7 @@ public class CombinedMeter implements Meter {
             energy += footprint.energy;
         }
 
-        long time = Duration.between(start, end).toMillis();
-
+        final long time = Duration.between(start, end).toMillis();
         GreenLogger.get().info(String.format("green: energy %f samples %d time %d", energy, samples.size(), time));
 
         return new Measurements(energy, time);
