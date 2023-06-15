@@ -58,18 +58,13 @@ public class CombinedMeter implements Meter {
                 Runtime.getRuntime().freeMemory()));
 
         final var accumulator = new Accumulator();
+
         Eflect.getInstance().start(4);
-        Thread t = new Thread(accumulator);
         Instant start = Instant.now();
         runnable.run();
         Instant end = Instant.now();
-        t.interrupt();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Eflect.getInstance().stop();
+
         accumulator.update();
 
         GreenLogger.get().info(String.format("green: stop thread %s gc total %d max %d free %d",

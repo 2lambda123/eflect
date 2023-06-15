@@ -1,6 +1,9 @@
 package eflect.data;
 
+import eflect.util.NamedSupplier;
+
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static eflect.util.LoggerUtil.getLogger;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,7 +16,7 @@ import java.util.function.Supplier;
 /** A clerk that collects data at a fixed period. */
 public class SampleCollector<O> {
   private final ArrayList<Future<?>> futures = new ArrayList<>();
-  private final Iterable<Supplier<Sample>> sources;
+  private final Iterable<NamedSupplier<Sample>> sources;
   private final SampleProcessor<O> processor;
   private final ScheduledExecutorService executor;
   private final Duration period;
@@ -21,7 +24,7 @@ public class SampleCollector<O> {
   private boolean isRunning = false;
 
   public SampleCollector(
-      Collection<Supplier<Sample>> sources,
+      Collection<NamedSupplier<Sample>> sources,
       SampleProcessor<O> processor,
       ScheduledExecutorService executor,
       Duration period) {
@@ -54,7 +57,8 @@ public class SampleCollector<O> {
   }
 
   private void startCollecting() {
-    for (Supplier<Sample> source : sources) {
+    for (NamedSupplier<Sample> source : sources) {
+      getLogger().info(String.format("starting source [%s]", source.getName()));
       addFuture(executor.submit(() -> runAndReschedule(() -> processor.add(source.get()))));
     }
   }
@@ -67,6 +71,18 @@ public class SampleCollector<O> {
 
   private void stopFutures() {
     synchronized (futures) {
+      int done = 0;
+      int cancled = 0;
+      for (Future<?> future : futures) {
+        if (future.isDone()) {
+          done++;
+        }
+        if (future.isCancelled()) {
+          cancled++;
+        }
+      }
+      getLogger().info(String.format("futures total %d done %d cancled %d", futures.size(), done, cancled));
+
       // make sure the previous futures are done or cancelled
       for (Future<?> future : futures) {
         // attempt to cancel the future; if we can't, get the result safely
@@ -96,6 +112,7 @@ public class SampleCollector<O> {
       addFuture(
           executor.schedule(() -> runAndReschedule(r), rescheduleTime.toNanos(), NANOSECONDS));
     } else {
+      getLogger().severe(String.format("lagging behind by %d", rescheduleTime.abs().toMillis()));
       addFuture(executor.submit(() -> runAndReschedule(r)));
     }
   }

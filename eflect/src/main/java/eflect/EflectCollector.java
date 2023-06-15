@@ -12,6 +12,7 @@ import eflect.data.SampleCollector;
 import eflect.data.jiffies.JiffiesAccountant;
 import eflect.data.jiffies.ProcStatSample;
 import eflect.data.jiffies.ProcTaskSample;
+import eflect.util.NamedSupplier;
 import eflect.util.Rapl;
 import java.time.Duration;
 import java.time.Instant;
@@ -29,11 +30,11 @@ final class EflectCollector extends SampleCollector<Collection<EnergyFootprint>>
   private static final double WRAP_AROUND_ENERGY = Rapl.getInstance().getWrapAroundEnergy();
   private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
-  private static Collection<Supplier<Sample>> getSources() {
-    Supplier<Sample> stat = () -> new ProcStatSample(Instant.now(), readProcStat());
-    Supplier<Sample> task = () -> new ProcTaskSample(Instant.now(), readTaskStats());
-    Supplier<Sample> rapl =
-        () -> new EnergySample(Instant.now(), Rapl.getInstance().getEnergyStats());
+  private static Collection<NamedSupplier<Sample>> getSources() {
+    NamedSupplier<Sample> stat = new NamedSupplier<>("stat", () -> new ProcStatSample(Instant.now(), readProcStat()));
+    NamedSupplier<Sample> task = new NamedSupplier<>("task", () -> new ProcTaskSample(Instant.now(), readTaskStats()));
+    NamedSupplier<Sample> rapl =
+        new NamedSupplier<>("rapl", () -> new EnergySample(Instant.now(), Rapl.getInstance().getEnergyStats()));
     return List.of(stat, task, rapl);
   }
 
