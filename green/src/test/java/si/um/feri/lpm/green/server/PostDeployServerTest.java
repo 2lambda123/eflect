@@ -44,7 +44,7 @@ class PostDeployServerTest {
     void testQuick() throws IOException {
         var request = SunflowKnobs.newBuilder()
                 .setThreads(8)
-                .setResolution(128)
+                .setResolution(64)
                 .setAaMin(-1)
                 .setAaMax(-2)
                 .setBucketSize(32)

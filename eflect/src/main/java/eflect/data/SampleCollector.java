@@ -1,7 +1,5 @@
 package eflect.data;
 
-import eflect.util.NamedSupplier;
-
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static eflect.util.LoggerUtil.getLogger;
 
@@ -16,7 +14,7 @@ import java.util.function.Supplier;
 /** A clerk that collects data at a fixed period. */
 public class SampleCollector<O> {
   private final ArrayList<Future<?>> futures = new ArrayList<>();
-  private final Iterable<NamedSupplier<Sample>> sources;
+  private final Iterable<Supplier<Sample>> sources;
   private final SampleProcessor<O> processor;
   private final ScheduledExecutorService executor;
   private final Duration period;
@@ -24,7 +22,7 @@ public class SampleCollector<O> {
   private boolean isRunning = false;
 
   public SampleCollector(
-      Collection<NamedSupplier<Sample>> sources,
+      Collection<Supplier<Sample>> sources,
       SampleProcessor<O> processor,
       ScheduledExecutorService executor,
       Duration period) {
@@ -38,8 +36,8 @@ public class SampleCollector<O> {
   public final void start() {
     if (!isRunning) {
       stopFutures();
-      startCollecting();
       isRunning = true;
+      startCollecting();
     }
   }
 
@@ -57,8 +55,7 @@ public class SampleCollector<O> {
   }
 
   private void startCollecting() {
-    for (NamedSupplier<Sample> source : sources) {
-      getLogger().info(String.format("starting source [%s]", source.getName()));
+    for (Supplier<Sample> source : sources) {
       addFuture(executor.submit(() -> runAndReschedule(() -> processor.add(source.get()))));
     }
   }
@@ -71,17 +68,7 @@ public class SampleCollector<O> {
 
   private void stopFutures() {
     synchronized (futures) {
-      int done = 0;
-      int cancled = 0;
-      for (Future<?> future : futures) {
-        if (future.isDone()) {
-          done++;
-        }
-        if (future.isCancelled()) {
-          cancled++;
-        }
-      }
-      getLogger().info(String.format("futures total %d done %d cancled %d", futures.size(), done, cancled));
+      getLogger().info(String.format("futures total %d", futures.size()));
 
       // make sure the previous futures are done or cancelled
       for (Future<?> future : futures) {
