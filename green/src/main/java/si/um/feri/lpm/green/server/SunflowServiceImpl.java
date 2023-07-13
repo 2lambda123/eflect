@@ -28,6 +28,14 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
                 request.getAoSamples(),
                 Filter.values()[request.getFilter().getNumber()]);
 
+        GreenLogger.get().info(String.format("green: knobs threads %d res %d aamin %d aamax %d buck %d ao %d",
+            knobs.threads(),
+            knobs.resolution(),
+            knobs.aaMin(),
+            knobs.aaMax(),
+            knobs.bucketSize(),
+            knobs.aoSamples()));
+
         final var runner = factory.new Runner(knobs);
         final var measurements = meter.measure(runner);
         final var distance = runner.imageDifference().mse();
@@ -37,6 +45,8 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
                 .setDistance(distance)
                 .setKilled(runner.killed())
                 .build();
+
+        GreenLogger.get().info(String.format("green: killed %b", runner.killed()));
 
         responseObserver.onNext(reply);
         responseObserver.onCompleted();
