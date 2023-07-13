@@ -1,21 +1,22 @@
 package si.um.feri.lpm.green.sunflowload;
 
-import dev.brachtendorf.jimagehash.hash.Hash;
-import dev.brachtendorf.jimagehash.hashAlgorithms.HashingAlgorithm;
-import dev.brachtendorf.jimagehash.hashAlgorithms.PerceptiveHash;
 import org.sunflow.SunflowAPI;
 import org.sunflow.core.Display;
 import org.sunflow.image.Color;
+import org.sunflow.system.UI;
 import si.um.feri.lpm.green.sunflowload.scenes.CornellBox;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SunflowRunnerFactory {
 
     BufferedImage referenceImage;
+    long referenceDuration;
 
     // Striped down org.sunflow.core.display.FastDisplay
     static class BufferedImageDisplay implements Display {
@@ -77,22 +78,48 @@ public class SunflowRunnerFactory {
     }
 
     public SunflowRunnerFactory() {
-        this.referenceImage = render(SunflowKnobs.REFERENCE);
+        this(SunflowKnobs.REFERENCE);
+    }
+
+    public SunflowRunnerFactory(SunflowKnobs referenceKnobs) {
+        Instant start = Instant.now();
+        this.referenceImage = render(referenceKnobs);
+        referenceDuration = Duration.between(start, Instant.now()).toMillis();
     }
 
     public class Runner implements Runnable {
         BufferedImage image;
         BufferedImage resizedImage;
         SunflowKnobs knobs;
+        double tolerance = 0.5;
+        boolean killed = false;
 
         public Runner(SunflowKnobs knobs) {
             this.knobs = knobs;
         }
 
+        public Runner(SunflowKnobs knobs, double tolerance) {
+            this.knobs = knobs;
+            this.tolerance = tolerance;
+        }
+
         @Override
         public void run() {
+            var timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    UI.taskCancel();
+                    killed = true;
+                }
+            }, referenceDuration + (long)(tolerance * referenceDuration)); // Tolerance is added to account for the variability of the runtimes
             this.image = render(this.knobs);
+            timer.cancel();
             this.resizedImage = resize(this.image, referenceImage.getWidth(), referenceImage.getHeight());
+        }
+
+        public boolean killed() {
+            return killed;
         }
 
         public ImageDifference.Result imageDifference() {

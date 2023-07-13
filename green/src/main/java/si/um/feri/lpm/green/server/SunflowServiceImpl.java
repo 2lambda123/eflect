@@ -35,6 +35,7 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
                 .setEnergy(measurements.energy())
                 .setTime(measurements.time())
                 .setDistance(distance)
+                .setKilled(runner.killed())
                 .build();
 
         responseObserver.onNext(reply);

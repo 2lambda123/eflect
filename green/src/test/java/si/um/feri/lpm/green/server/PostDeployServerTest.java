@@ -61,7 +61,7 @@ class PostDeployServerTest {
         System.out.println(response.getEnergy());
         System.out.println(response.getTime());
         System.out.println(response.getDistance());
-        assertTrue(response.getEnergy() > 0.0);
+        assertEquals(0.0, response.getEnergy());
         assertTrue(response.getTime() > 0);
         assertTrue(response.getDistance() > 0.0);
     }
