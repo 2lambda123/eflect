@@ -36,7 +36,7 @@ class SunflowServiceImpl extends SunflowServiceGrpc.SunflowServiceImplBase {
             knobs.bucketSize(),
             knobs.aoSamples()));
 
-        final var runner = factory.new Runner(knobs);
+        final var runner = request.hasMaxDuration() ? factory.new Runner(knobs, request.getMaxDuration()) : factory.new Runner(knobs);
         final var measurements = meter.measure(runner);
         final var distance = runner.imageDifference().mse();
         final var reply = Fitness.newBuilder()

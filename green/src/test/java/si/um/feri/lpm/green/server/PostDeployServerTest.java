@@ -65,4 +65,59 @@ class PostDeployServerTest {
         assertTrue(response.getTime() > 0);
         assertTrue(response.getDistance() > 0.0);
     }
+
+    @Tag("PostDeploy")
+    @org.junit.jupiter.api.Test
+    void testSlow() throws IOException {
+        var request = SunflowKnobs.newBuilder()
+                .setThreads(1)
+                .setResolution(640)
+                .setAaMin(3)
+                .setAaMax(3)
+                .setBucketSize(32)
+                .setAoSamples(64)
+                .setFilter(Filter.BLACKMAN_HARRIS)
+                .build();
+
+        var channel = ManagedChannelBuilder.forTarget("localhost:50051")
+                .usePlaintext()
+                .build();
+
+        var stub = SunflowServiceGrpc.newBlockingStub(channel);
+        var response = stub.fitness(request);
+        System.out.println(response.getEnergy());
+        System.out.println(response.getTime());
+        System.out.println(response.getDistance());
+        assertTrue(response.getEnergy() > 0.0);
+        assertTrue(response.getTime() > 0);
+        assertTrue(response.getDistance() > 0.0);
+    }
+
+    @Tag("PostDeploy")
+    @org.junit.jupiter.api.Test
+    void testCustomMaxDuration() throws IOException {
+        var request = SunflowKnobs.newBuilder()
+                .setThreads(1)
+                .setResolution(640)
+                .setAaMin(3)
+                .setAaMax(3)
+                .setBucketSize(32)
+                .setAoSamples(64)
+                .setMaxDuration(500)
+                .setFilter(Filter.BLACKMAN_HARRIS)
+                .build();
+
+        var channel = ManagedChannelBuilder.forTarget("localhost:50051")
+                .usePlaintext()
+                .build();
+
+        var stub = SunflowServiceGrpc.newBlockingStub(channel);
+        var response = stub.fitness(request);
+        System.out.println(response.getEnergy());
+        System.out.println(response.getTime());
+        System.out.println(response.getDistance());
+        assertTrue(response.getEnergy() > 0.0);
+        assertTrue(response.getTime() > 0);
+        assertTrue(response.getDistance() > 0.0);
+    }
 }

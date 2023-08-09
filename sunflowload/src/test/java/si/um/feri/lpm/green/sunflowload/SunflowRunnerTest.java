@@ -1,6 +1,10 @@
 package si.um.feri.lpm.green.sunflowload;
 
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.Instant;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SunflowRunnerTest {
@@ -48,5 +52,16 @@ class SunflowRunnerTest {
         final var runner = factory.new Runner(new SunflowKnobs(7, 640, 3, 3, 32, 64, Filter.BLACKMAN_HARRIS));
         runner.run();
         assertTrue(runner.killed());
+    }
+
+    @Test
+    void timeoutCustom() {
+        final long duration = 5000;
+        final var runner = factory.new Runner(new SunflowKnobs(7, 640, 3, 3, 32, 64, Filter.BLACKMAN_HARRIS), duration);
+        Instant start = Instant.now();
+        runner.run();
+        final var actualDuration = Duration.between(start, Instant.now()).toMillis();
+        assertTrue(runner.killed());
+        System.out.println(actualDuration);
     }
 }

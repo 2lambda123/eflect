@@ -6,4 +6,5 @@ include 'sunflowload'
 include 'proto'
 include 'green'
 include 'kaze'
+include 'client'
 

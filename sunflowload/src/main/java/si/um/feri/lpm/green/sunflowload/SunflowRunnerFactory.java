@@ -91,16 +91,23 @@ public class SunflowRunnerFactory {
         BufferedImage image;
         BufferedImage resizedImage;
         SunflowKnobs knobs;
-        double tolerance = 0.5;
+        double tolerance;
         boolean killed = false;
+        long maxDuration;
+
+
+        public Runner(SunflowKnobs knobs, long maxDuration) {
+            this.knobs = knobs;
+            this.maxDuration = maxDuration;
+        }
 
         public Runner(SunflowKnobs knobs) {
-            this.knobs = knobs;
+            this(knobs, 0.5);
         }
 
         public Runner(SunflowKnobs knobs, double tolerance) {
             this.knobs = knobs;
-            this.tolerance = tolerance;
+            this.maxDuration = referenceDuration + (long)(tolerance * referenceDuration); // Tolerance is added to account for the variability of the runtimes
         }
 
         @Override
@@ -112,7 +119,7 @@ public class SunflowRunnerFactory {
                     UI.taskCancel();
                     killed = true;
                 }
-            }, referenceDuration + (long)(tolerance * referenceDuration)); // Tolerance is added to account for the variability of the runtimes
+            }, maxDuration);
             this.image = render(this.knobs);
             timer.cancel();
             this.resizedImage = resize(this.image, referenceImage.getWidth(), referenceImage.getHeight());
