@@ -15,7 +15,7 @@ public final class Rapl {
 
     if (path == null) {
       try {
-        NativeUtil.loadLibraryFromJar("/libCPUScaler.so");
+        NativeUtil.loadLibraryFromJar("/libCPUScaler.dylib");
       } catch (Exception e) {
         LoggerUtil.getLogger().info("couldn't find CPUScaler!");
       }

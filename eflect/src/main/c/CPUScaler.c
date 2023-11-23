@@ -10,7 +10,8 @@
 #include "CPUScaler.h"
 #include "arch_spec.h"
 #include "msr.h"
-
+void
+get_cpu_model(void);
 rapl_msr_unit rapl_unit;
 rapl_msr_parameter *parameters;
 char *ener_info;
